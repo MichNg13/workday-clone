@@ -199,30 +199,29 @@ npm run dev                    # http://localhost:3000
 2. Environment variables are optional. The app falls back to the project's publishable URL and key. To point at another project, set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 3. Deploy.
 4. In Supabase, go to **Authentication › URL Configuration** and set **Site URL** to your Vercel URL. Add `https://<your-app>.vercel.app/**` to the redirect URLs so sign-up and password-reset emails link back to the app.
-5. Optional: set `NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS=false` to hide the demo-account panel on the sign-in page.
 
 ## Set up a fresh Supabase project
 
 Apply the files in `supabase/migrations` in order: `supabase db push`, or paste them into the SQL editor. Then run `supabase/seed.sql` if you want demo data.
 
-## Demo accounts
+## Demo data
 
-Every demo account uses the password **`Workday#Demo2026`**. Delete these users before real use.
+The live project keeps 10 sample workers (5 departments) with their leave history, pending requests and claims as read-only history. Their demo sign-ins have been deleted, so nobody can log in as them.
 
-| Email | Who | Try |
-|---|---|---|
-| daniel.lim@example.com | Operations Executive | Request leave, submit a claim |
-| priya.nair@example.com | Sales Executive, joined Jul 2026 | Pro-rated AL (3 of 7 left) |
-| meiling.wong@example.com | Head of Operations | Inbox: approve Daniel / Ahmad (clash flag) |
-| rajesh.kumar@example.com | Head of Sales | Approve Priya's SGD 140.30 claim |
-| grace.tan@example.com | Managing Director | Approves Department Heads; receives escalations |
-| sarah.chen@example.com | HR Manager | Master Leave Record, entitlements, workers, report |
-| nurul.huda@example.com | Office Manager | Live tracker, approval notifications |
-| kevin.ong@example.com | Finance Manager | Payment queue: pay with reference or return |
+For a **fresh** project, `supabase/seed.sql` recreates the sample data *and* demo sign-ins (password `Workday#Demo2026`). Only run it on a throwaway project, and delete those users before real use.
+
+## First admin
+
+Sign-up only works for emails that have an active worker record. To bootstrap, add yourself in the Supabase SQL editor, then sign up on the login page with that email:
+
+```sql
+insert into public.employees (employee_no, full_name, email, job_title, role, hire_date)
+values ('E0001', 'Your Name', 'you@company.com', 'HR Administrator', 'admin', current_date);
+```
 
 ## Next steps before go-live
 
 - Replace the default entitlements and claim limits with the contract and finance policy figures (HR › Policies & Holidays).
-- Delete the demo users. Add real workers (People › Add worker) and have them sign up with their work email.
+- Add real workers (People › Add worker) and have them sign up with their work email.
 - Turn on Supabase **leaked-password protection**, and add custom SMTP for auth emails.
 - Optional: send email or Teams notifications from the `notifications` table, using a Supabase Edge Function or Database Webhook.
