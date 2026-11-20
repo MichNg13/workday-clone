@@ -27,12 +27,12 @@ export default async function Home() {
   ]);
 
   const tasks = [
-    ...(pendingLeave.data ?? []).map((r) => ({
+    ...(pendingLeave.data ?? []).map((r: any) => ({
       key: 'l' + r.id, when: r.submitted_at,
       title: `Time off request: ${r.employee?.full_name}`,
       sub: `${r.reference} · ${r.type?.name} · ${fmtRange(r.start_date, r.end_date, r.day_part)} · ${days(r.days)}`,
     })),
-    ...(pendingClaims.data ?? []).map((c) => ({
+    ...(pendingClaims.data ?? []).map((c: any) => ({
       key: 'c' + c.id, when: c.submitted_at,
       title: `Expense report: ${c.employee?.full_name}`,
       sub: `${c.reference} · ${c.title} · ${money(c.total_amount)}`,

@@ -28,7 +28,7 @@ export default async function TeamPage({ searchParams }: { searchParams: Promise
     supabase.rpc('team_absences', { p_from: from, p_to: to }),
     supabase.from('public_holidays').select('*').gte('holiday_date', from).lte('holiday_date', to),
   ]);
-  const ppl = (people.data ?? []).map((p) => ({ id: p.id, full_name: p.full_name, department: seeAll ? p.department?.name : null, manager_id: p.manager_id }));
+  const ppl = (people.data ?? []).map((p: any) => ({ id: p.id, full_name: p.full_name, department: seeAll ? p.department?.name : null, manager_id: p.manager_id }));
 
   // Balances of people I manage (RLS: managers see their reporting line)
   const reportIds = ppl.filter((p) => p.manager_id === me.id).map((p) => p.id);

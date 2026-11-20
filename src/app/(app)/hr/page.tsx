@@ -27,7 +27,7 @@ export default async function HrHome({ searchParams }: { searchParams: Promise<{
   ]);
   const map = new Map<string, any>();
   (bal.data ?? []).forEach((b) => map.set(`${b.employee_id}:${b.leave_type_code}`, b));
-  const rows = (emps.data ?? []).filter((e) => !sp.dept || e.department_id === sp.dept);
+  const rows: any[] = (emps.data ?? []).filter((e: any) => !sp.dept || e.department_id === sp.dept);
 
   return (
     <>
